@@ -29,7 +29,7 @@ def  getBrownDatasetTokens():
 def getBrownDatasetTokensWithTags():
     files_list = listdir("dataset/brown/")
     data = []
-    count=0
+    count = 0
     for file_name in files_list:
         file = open("dataset/brown/" + file_name, 'r', errors='ignore')
         sentences = [x.strip() for x in file.readlines() if x.strip()]
@@ -38,5 +38,5 @@ def getBrownDatasetTokensWithTags():
             data.extend(tokens)
         if count > 5:
             break
-        count+=1
-    return pd.DataFrame(data,columns=['token','tag'])
+        count += 1
+    return pd.DataFrame(data,columns=['token','tag']).set_index(['token'])

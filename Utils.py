@@ -34,7 +34,7 @@ def getBrownDatasetTokensWithTags():
         file = open("dataset/brown/" + file_name, 'r', errors='ignore')
         sentences = [x.strip() for x in file.readlines() if x.strip()]
         for sentence in sentences:
-            tokens = [x.split('/') for x in sentence.split() if '//' not in x and len(x.split('/')) == 2]
+            tokens = [[x.split('/')[0].lower(),x.split('/')[1]] for x in sentence.split() if len(x.split('/')) == 2]
             data.extend(tokens)
         if count > 5:
             break

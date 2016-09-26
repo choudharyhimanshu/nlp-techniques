@@ -2,6 +2,7 @@
 # @home : http://www.himanshuchoudhary.com
 # @git : https://bitbucket.org/himanshuchoudhary/
 
+from __future__ import print_function
 import pandas as pd
 from numpy import random
 from sklearn.metrics import accuracy_score

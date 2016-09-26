@@ -10,7 +10,7 @@ def getBrownDatasetSentences():
     files_list = listdir("dataset/brown/")
     data = []
     for file_name in files_list:
-        file = open("dataset/brown/" + file_name, 'r', errors='ignore')
+        file = open("dataset/brown/" + file_name, 'r')
         sentences = [x.strip() for x in file.readlines() if x.strip()]
         data.extend(sentences)
     return np.array(data)
@@ -29,14 +29,12 @@ def  getBrownDatasetTokens():
 def getBrownDatasetTokensWithTags():
     files_list = listdir("dataset/brown/")
     data = []
-    count = 0
     for file_name in files_list:
-        file = open("dataset/brown/" + file_name, 'r', errors='ignore')
+        if 'cr' not in file_name:
+            continue
+        file = open("dataset/brown/" + file_name, 'r')
         sentences = [x.strip() for x in file.readlines() if x.strip()]
         for sentence in sentences:
-            tokens = [[x.split('/')[0].lower(),x.split('/')[1]] for x in sentence.split() if len(x.split('/')) == 2]
+            tokens = [x.split('/') for x in sentence.split() if len(x.split('/')) == 2]
             data.extend(tokens)
-        if count > 5:
-            break
-        count += 1
     return pd.DataFrame(data,columns=['token','tag']).set_index(['token'])

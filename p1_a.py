@@ -7,7 +7,7 @@ import pandas as pd
 from numpy import random
 from sklearn.metrics import accuracy_score
 from sklearn.cross_validation import train_test_split
-from Utils import getBrownDatasetTokensWithTags
+from Utils import getBrownDatasetTokens
 
 random.seed(1)
 
@@ -25,7 +25,7 @@ def tagTokensWithMostFreqTag(data):
         tagged.append([token, tag])
     return pd.DataFrame(tagged, columns=['token', 'tag']).set_index(['token'])
 
-dataset = getBrownDatasetTokensWithTags()
+dataset = getBrownDatasetTokens()
 
 dataset_train, dataset_test = train_test_split(dataset, test_size=0.2)
 
@@ -40,9 +40,9 @@ for token in dataset_test.index:
     tags_pred.append(tag)
 
 score = accuracy_score(dataset_test.values, tags_pred)
-print('Total (token,tag) pairs in the dataset : %d' % len(dataset), file=FILE_OUT)
-print('# of (token,tag) pairs used as training set : %d' % len(dataset_train), file=FILE_OUT)
-print('# of (token,tag) pairs used as testing set : %d' % len(dataset_test), file=FILE_OUT)
-print('# of unique tokens in the training set : %d' % len(dataset_train.index.unique()), file=FILE_OUT)
-print('Accuracy : %f' % score, file=FILE_OUT)
+print("Total (token,tag) pairs in the dataset : {:d}".format(len(dataset)), file=FILE_OUT)
+print("# of (token,tag) pairs used as training set : {:d}".format(len(dataset_train)), file=FILE_OUT)
+print("# of (token,tag) pairs used as testing set : {:d}".format(len(dataset_test)), file=FILE_OUT)
+print("# of unique tokens in the training set : {:d}".format(len(dataset_train.index.unique())), file=FILE_OUT)
+print("Accuracy : {:.2f}%".format(score*100), file=FILE_OUT)
 print("\n", file=FILE_OUT)

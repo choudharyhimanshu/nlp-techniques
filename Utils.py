@@ -10,23 +10,18 @@ def getBrownDatasetSentences():
     files_list = listdir("dataset/brown/")
     data = []
     for file_name in files_list:
+        if 'cr' not in file_name:
+            continue
         file = open("dataset/brown/" + file_name, 'r')
         sentences = [x.strip() for x in file.readlines() if x.strip()]
-        data.extend(sentences)
-    return np.array(data)
-
-def  getBrownDatasetTokens():
-    files_list = listdir("dataset/brown/")
-    data = []
-    for file_name in files_list:
-        file = open("dataset/brown/" + file_name, 'r', errors='ignore')
-        sentences = [x.strip() for x in file.readlines() if x.strip()]
         for sentence in sentences:
-            tokens = [x.split('/')[0] for x in sentence.split() if '//' not in x and len(x.split('/')) == 2]
-            data.extend(tokens)
-    return pd.DataFrame(data,columns=['token','tag'])
+            tokens = np.array([x.split('/') for x in sentence.lower().split() if len(x.split('/')) == 2])
+            tags = tokens[:,1]
+            tokens = tokens[:,0]
+            data.append([tokens,tags])
+    return pd.DataFrame(data,columns=['sentence','tags'])
 
-def getBrownDatasetTokensWithTags():
+def getBrownDatasetTokens():
     files_list = listdir("dataset/brown/")
     data = []
     for file_name in files_list:
@@ -35,6 +30,6 @@ def getBrownDatasetTokensWithTags():
         file = open("dataset/brown/" + file_name, 'r')
         sentences = [x.strip() for x in file.readlines() if x.strip()]
         for sentence in sentences:
-            tokens = [x.split('/') for x in sentence.split() if len(x.split('/')) == 2]
+            tokens = [x.split('/') for x in sentence.lower().split() if len(x.split('/')) == 2]
             data.extend(tokens)
     return pd.DataFrame(data,columns=['token','tag']).set_index(['token'])

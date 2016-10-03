@@ -10,7 +10,9 @@ def getBrownDatasetSentences():
     files_list = listdir("dataset/brown/")
     data = []
     for file_name in files_list:
-        if 'cr' not in file_name:
+        if 'cr' in file_name:
+            pass
+        else:
             continue
         file = open("dataset/brown/" + file_name, 'r')
         sentences = [x.strip() for x in file.readlines() if x.strip()]
@@ -25,7 +27,9 @@ def getBrownDatasetTokens():
     files_list = listdir("dataset/brown/")
     data = []
     for file_name in files_list:
-        if 'cr' not in file_name:
+        if 'cr' in file_name or 'cc' in file_name:
+            pass
+        else:
             continue
         file = open("dataset/brown/" + file_name, 'r')
         sentences = [x.strip() for x in file.readlines() if x.strip()]

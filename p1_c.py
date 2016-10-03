@@ -65,7 +65,7 @@ model.add(Embedding(len(vocab),128,input_length=MAX_SENT_LENGTH,dropout=0.2))
 model.add(LSTM(len(tagset),input_dim=128,input_length=MAX_SENT_LENGTH,dropout_U=0.2,dropout_W=0.2,return_sequences=True))
 model.add(TimeDistributed(Dense(len(tagset),init='normal',activation='softmax',input_shape=(128,MAX_SENT_LENGTH))))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(X_train, y_train, nb_epoch=20, batch_size=64)
+model.fit(X_train, y_train, nb_epoch=20, batch_size=32)
 
 score = model.evaluate(X_test, y_test)
 print("Total sentences in the dataset : {:d}".format(len(dataset)), file=FILE_OUT)

@@ -10,7 +10,7 @@ def getBrownDatasetSentences():
     files_list = listdir("dataset/brown/")
     data = []
     for file_name in files_list:
-        if 'cr' in file_name:
+        if 'cr' in file_name or 'cc' in file_name or True:
             pass
         else:
             continue

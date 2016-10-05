@@ -63,7 +63,7 @@ def getIMDBTrainDataset(limit):
         file = open("dataset/aclImdb/train/neg/" + file_name, 'r')
         review = file.readline().replace('<br />','')
         rating = file_name.split('_')[1].split('.')[0]
-        data.append([review,rating])
+        data.append([review,int(rating),0])
         count += 1
     count = 0
     files_list_pos = listdir("dataset/aclImdb/train/pos/")
@@ -73,10 +73,10 @@ def getIMDBTrainDataset(limit):
         file = open("dataset/aclImdb/train/pos/" + file_name, 'r')
         review = file.readline().replace('<br />','')
         rating = file_name.split('_')[1].split('.')[0]
-        data.append([review, rating])
+        data.append([review, int(rating),1])
         count += 1
     np.random.shuffle(data)
-    return pd.DataFrame(data,columns=['review','rating'])
+    return pd.DataFrame(data,columns=['review','rating','polarity'])
 
 def getIMDBTestDataset(limit):
     data = []
@@ -88,7 +88,7 @@ def getIMDBTestDataset(limit):
         file = open("dataset/aclImdb/test/neg/" + file_name, 'r')
         review = file.readline().replace('<br />','')
         rating = file_name.split('_')[1].split('.')[0]
-        data.append([review,rating])
+        data.append([review,int(rating),0])
         count += 1
     count = 0
     files_list_pos = listdir("dataset/aclImdb/test/pos/")
@@ -98,7 +98,7 @@ def getIMDBTestDataset(limit):
         file = open("dataset/aclImdb/test/pos/" + file_name, 'r')
         review = file.readline().replace('<br />','')
         rating = file_name.split('_')[1].split('.')[0]
-        data.append([review, rating])
+        data.append([review, int(rating),1])
         count += 1
     np.random.shuffle(data)
-    return pd.DataFrame(data,columns=['review','rating'])
+    return pd.DataFrame(data,columns=['review','rating','polarity'])

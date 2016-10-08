@@ -8,13 +8,24 @@ import pandas as pd
 from Utils import getIMDBTrainDataset, getIMDBTestDataset
 
 from nltk import word_tokenize
-from gensim.models import Word2Vec
 from sklearn.feature_extraction.text import TfidfVectorizer
+from word2vec import W2V
 
 from sklearn.svm import LinearSVC
 
 # from keras.models import Sequential
 # from keras.layers import TimeDistributed, Dense, LSTM
+
+np.random.seed(1)
+
+FILE_VOCAB = "dataset/aclImdb/imdb.vocab"
+FILE_W2V_MODEL = "dataset/glove.6B.50d.txt"
+# FILE_W2V_MODEL = "output/imdb_trained.word2vec.model"
+FILE_OUT = open("output/p3_e.txt", 'a')
+
+DATASET_SIZE = 3000
+VECTOR_SIZE = 100
+MAX_REVIEW_LEN = 100
 
 def tokenize(text):
     return word_tokenize(text.decode('utf-8'))
@@ -29,16 +40,7 @@ def weight(token):
     return MAX_IDF
 
 def weightVectorize(data):
-    return np.array([np.array([weight(token)*vectorizer[token] if token in vectorizer else
-                        np.zeros(VECTOR_SIZE) for token in tokens]) for tokens in data])
-
-np.random.seed(1)
-
-FILE_OUT = open("output/p3_e.txt", 'a')
-
-DATASET_SIZE = 3000
-VECTOR_SIZE = 40
-MAX_REVIEW_LEN = 50
+    return np.array([np.array([weight(token)*vectorizer.transform(token) for token in tokens]) for tokens in data])
 
 dataset_train = getIMDBTrainDataset(.8*DATASET_SIZE)
 dataset_test = getIMDBTestDataset(.2*DATASET_SIZE)
@@ -55,7 +57,9 @@ reviews_train = dataset_train.review.map(tokenize)
 reviews_test = dataset_test.review.map(tokenize)
 
 # vectorizer = Word2Vec(pd.concat([reviews_train,reviews_test]),size=VECTOR_SIZE,window=2,min_count=1,workers=1)
-vectorizer = Word2Vec(reviews_train,size=VECTOR_SIZE,window=2,min_count=1,workers=1)
+# vectorizer.train(reviews_train)
+
+vectorizer = W2V(vector_size=VECTOR_SIZE,file_vocab=FILE_VOCAB,file_model=FILE_W2V_MODEL)
 
 reviews_train = reviews_train.map(pad)
 reviews_test = reviews_test.map(pad)
